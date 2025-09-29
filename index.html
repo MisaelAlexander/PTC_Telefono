@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Inicio Principal</title>
+  <link rel="stylesheet" href="CSS/vista.css" />
+  <link rel="stylesheet" href="CSS/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+ <input type="checkbox" id="nav-toggle" hidden>
+  <label for="nav-toggle" class="burger" aria-label="Abrir / cerrar menú">
+    <span></span>
+  </label>
+
+  
+<body>
+  
+  <div class="phone-frame">
+    <header class="header">
+      <img src="" alt="Perfil" class="avatar" />
+      <div>
+        <p class="welcome">Hola, Isaac 👋</p>
+        <p class="subtitle">Encuentra tu nuevo hogar</p>
+      </div>
+      <button class="icon"><img src="IMG/Notificaciones.png" alt="casa"></button>
+    </header>
+
+    <div class="banner">
+      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c" alt="Banner" />
+    </div>
+
+    <div class="categories">
+  <div class="category">
+    <a href="Propiedades.html?tipo=3">
+      <span><img src="IMG/Casa.png" alt="casa"></span>
+      <p>Casas</p>
+    </a>
+  </div>
+  <div class="category">
+    <a href="Propiedades.html?tipo=1">
+      <span><img src="IMG/Departamento.png" alt="Departamento"></span>
+      <p>Apartamentos</p>
+    </a>
+  </div>
+  <div class="category">
+    <a href="Propiedades.html?tipo=6">
+      <span><img src="IMG/Bodega.png" alt="bodega"></span>
+      <p>Bodegas</p>
+    </a>
+  </div>
+  <div class="category" id="cercaDeTi">
+    <span><img src="IMG/Ubicacion.png" alt="ubicacion"></span>
+    <p>Cerca de ti</p>
+  </div>
+</div>
+
+    <section class="section">
+  <h3>Recomendado</h3>
+  <section class="card" id="carta">
+      <img src="img/Imativa_Casa_Carrasco_0013.webp" alt="Casa 2" />
+      <div class="info">
+        <div class="star-favorite">
+          <input type="checkbox" id="fav4" />
+          <label for="fav4">&#9733;</label>
+        </div>
+        <h3>Casa Familiar</h3>
+        <p>Ubicación: Santa Tecla</p>
+        <p>Precio: $135,000</p>
+        <p>4 habitaciones, 3 baños</p>
+      </div>
+    </section>
+
+</section>
+
+    <section class="section">
+      <h3>Para ti</h3>
+      <div class="placeholder-box">Explora propiedades cerca de tu ubicación actual.</div>
+      <button class="btn-yellow full" id="propiedades">Ver más propiedades</button>
+    </section>
+
+    <div style="height: 40px;"></div>
+  </div>
+   <nav class="bottom-nav" id="bottom-nav">
+     </nav>
+
+       <div id="notificacion" class="notificacion">
+    <p id="notificacionMensaje"></p>
+    </div>
+  <script type="module" src="JS/Controller/MenuController.js"></script>
+
+</body>
+</html>

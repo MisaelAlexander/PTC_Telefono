@@ -1,0 +1,179 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f0f4f8; /* Light background */
+    min-height: 100vh;
+    position: relative;
+}
+
+.container {
+    width: 100%;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.top-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background: transparent;
+}
+
+.back {
+  color: #f5b700;
+  font-size: 24px;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+.user-icon {
+    color: #003366; /* Dark blue */
+}
+
+/* Content */
+.content-wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.page-title {
+    font-size: 18px;
+    color: #003366; /* Dark blue */
+    margin-bottom: 20px;
+}
+
+.verification-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+}
+
+.card-content {
+    padding: 20px;
+}
+
+.logo-icon {
+    max-width: 80px; /* Maximum logo width */
+}
+
+/* Description */
+.description {
+    color: #4a4a4a;
+    font-size: 14px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.email-highlight {
+    font-weight: 600;
+    color: #003366; /* Dark blue */
+}
+
+/* Code Input */
+.code-form {
+    width: 100%;
+}
+
+.code-inputs {
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    margin-bottom: 20px;
+}
+
+.code-input {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    font-size: 18px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    background: #e6f7ff; /* Light blue */
+    transition: border-color 0.3s ease;
+}
+
+.code-input:focus {
+    outline: none;
+    border-color: #003366; /* Dark blue */
+}
+
+/* Submit Button */
+.submit-btn {
+    background-color: #ffc107; /* Yellow */
+    color: black;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+}
+
+/* Resend Link */
+.resend-link {
+    text-align: center;
+}
+
+.resend-btn {
+    background: none;
+    border: none;
+    color: #003366; /* Dark blue */
+    cursor: pointer;
+}
+
+/* Accessibility Focus Styles */
+.back-btn:focus,
+.code-input:focus,
+.submit-btn:focus {
+    outline: 2px solid #ffc107; /* Yellow */
+    outline-offset: 2px;
+}
+/*NOTIFICACIONES*/
+.notificacion {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: none;
+    min-width: 250px;
+    text-align: center;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+}
+
+.notificacion.exito {
+    background-color: #4caf50; /* verde */
+}
+
+.notificacion.exito p{
+    color: rgb(255, 255, 255);
+}
+.notificacion.error {
+    background-color: #f44336; /* rojo */
+}
+.notificacion.error p{
+    color: rgb(255, 255, 255);
+}

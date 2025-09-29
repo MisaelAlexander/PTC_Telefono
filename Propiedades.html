@@ -1,0 +1,53 @@
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu</title>
+  <link rel="stylesheet" href="CSS/Propiedades.css" />
+</head>
+<body>
+
+ <header class="top-bar">
+   <div class="top-bar-inner">
+  <a href="index.html" class="back">&#x276E;</a>
+  <input type="text" placeholder="Buscar" id="buscadorInput" />
+</div>
+
+    <div class="filters" id="filters">
+    </div>
+
+  <div class="controls">  
+  <div class="size-select">
+    <select id="selectSize">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="4" selected>4</option>
+      <option value="8">8</option>
+      <option value="10">10</option>
+    </select>
+  </div>
+
+  <div class="ubicacion-select">
+    <select id="ubicacionSelect">
+      <option value="">Todas</option>
+    </select>
+  </div>
+</div>
+
+  </header>
+
+    <!-- Notificación flotante -->
+  <div id="notificacion" class="notificacion">
+    <p id="notificacionMensaje"></p>
+  </div>
+  <!-- Contenedor de inmuebles -->
+  <main class="content-scroll"></main>
+
+  <!-- Contenedor de paginación -->
+  <div id="paginacion" class="paginacion"></div>
+
+
+
+  <script type="module" src="JS/Controller/PropiedadesController.js"></script>
+</body>
+</html>

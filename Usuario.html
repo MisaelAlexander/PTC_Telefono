@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuario</title>
+      <link rel="stylesheet" href="CSS/style.css">
+      <link rel="stylesheet" href="CSS/Usuario.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="app-header">
+      <h1 class="page-title">MI PERFIL</h1>
+      <div class="size-select"></div>
+    </header>
+
+    <main>
+      <div class="profile-picture">
+        <img id="perfilFoto" src="IMG/logo.png" alt="Imagen de perfil">
+      </div>
+
+      <!-- Notificación de respuesta -->
+      <div id="notificacion" class="notificacion">
+        <p id="notificacionMensaje"></p>
+      </div>
+
+      <!-- Notificación de confirmación -->
+      <div id="confirmacionDesactivar" class="notificacion" style="display:none;">
+        <p id="mensajeConfirmacion">¿Desea desactivar su cuenta?</p>
+        <div class="confirm-buttons">
+          <button id="btnConfirmar" class="btn-confirm">Sí</button>
+          <button id="btnCancelar" class="btn-cancel">No</button>
+        </div>
+      </div>
+
+      <div id="profileCard" class="profile-card"></div>
+
+      <div class="buttons">
+        <button id="actualizarBtn">Actualizar</button>
+        <button id="historialBtn">Historial</button>
+        <button id="guardarBtn" style="display:none;">Guardar</button>
+        <button id="cerrarSesionBtn" class="btn-cerrar">Cerrar Sesión</button>
+
+        <!-- Botón eliminar dentro del mismo bloque de botones -->
+        <button id="eliminarCuentaBtn" class="btn-eliminar">Eliminar Cuenta</button>
+      </div>
+
+    </main>
+<!--Notificacion de pregunta-->
+<div id="modalConfirm" class="modal">
+    <div class="modal-content">
+        <p id="modalMensaje"></p>
+        <div class="modal-buttons">
+            <button id="modalSi" class="btn-si">Sí</button>
+            <button id="modalNo" class="btn-no">No</button>
+        </div>
+    </div>
+</div>
+
+  </div>
+     <nav class="bottom-nav" id="bottom-nav">
+     </nav>
+  <script type="module" src="JS/Controller/UsuarioController.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperación de contraseña - ARQOS</title>
+    <link rel="stylesheet" href="CSS/RecuperarContraseña.css">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <a href="login.html" class="back">&#x276E;</a>
+        <h1>Recuperación de contraseña</h1>
+    </div>
+        <h2>Recuperar tu cuenta</h2>
+        <p>Ingresa tu dirección de correo electrónico asociada a tu cuenta y te enviaremos un enlace seguro para restablecer tu contraseña.</p>
+        <form action="#" method="post">
+            <label for="text">Correo electrónico</label>
+            <input type="text" id="email" name="email" placeholder="ejemplo@correo.com" required>
+            <button type="submit">Enviar enlace de recuperación</button>
+        </form>
+        <p>Tambien puedes usar tu usuario</p>
+    </div>
+</div>
+<!--Notificacion de respuesta-->
+<div id="notificacion" class="notificacion">
+    <p id="notificacionMensaje"></p>
+</div>
+<script type="module" src="JS/Controller/RecuperarContraseniaController.js"></script>
+</body>
+</html>

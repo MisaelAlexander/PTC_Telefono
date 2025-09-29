@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: white;
+  font-family: 'Inter', sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  background-color: white;
+  border: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.back {
+  color: #f5b700;
+  font-size: 24px;
+  text-decoration: none;
+  display: inline-block;
+  margin-bottom: 10px;
+}
+
+h2 {
+  color: #003366;
+  margin: 0;
+  font-size: 22px;
+}
+
+p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 20px;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+/*  Quitar ojo nativo de Chrome/Edge */
+input::-ms-reveal,
+input::-ms-clear,
+input::-webkit-credentials-auto-fill-button {
+  display: none !important;
+}
+input::-webkit-textfield-decoration-container {
+  display: none !important;
+}
+
+/* Contenedor con el ojo */
+.input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-container input {
+  width: 100%;
+  padding-right: 40px; /* espacio para el ícono */
+}
+
+.input-container .toggle-password {
+  position: absolute;
+  right: 12px;
+  top: 40%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+.btn {
+  width: 100%;
+  background-color: #f5b700;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.btn:hover {
+  background-color: #e0a800;
+}
+
+/* NOTIFICACIONES */
+.notificacion {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #323232;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  display: none;
+  min-width: 250px;
+  text-align: center;
+  z-index: 1000;
+  font-family: Arial, sans-serif;
+}
+
+.notificacion.exito {
+  background-color: #4caf50; /* verde */
+}
+
+.notificacion.exito p {
+  color: #fff;
+}
+
+.notificacion.error {
+  background-color: #f44336; /* rojo */
+}
+
+.notificacion.error p {
+  color: #fff;
+}
+
+.notificacion.show {
+  display: block;
+  animation: fadeInOut 3s forwards;
+}

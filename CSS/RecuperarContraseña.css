@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+body {
+    background-color: #ffffff; /* Color suave de fondo */
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    height: 100vh; /* Centrar verticalmente */
+}
+
+.back {
+  color: #f5b700;
+  font-size: 24px;
+  text-decoration: none;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 10px;
+}
+
+.container {
+    background-color: #ffffff; /* Fondo blanco del contenedor */
+    border-radius: 8px; /* Bordes redondeados */
+    padding: 20px;
+    max-width: 400px; /* Ancho máximo del contenedor */
+    text-align: left; /* Center text */
+}
+
+.logo {
+    width: 60px; /* Ancho del logo */
+    margin: 20px auto; /* Margen superior e inferior */
+}
+
+h1 {
+    color: #003366; /* Color del título */
+    font-size: 24px; /* Tamaño de fuente del título */
+    margin: 15px 0;
+}
+
+h2 {
+    color: #333333; /* Color del subtítulo */
+    font-size: 18px; /* Tamaño de fuente del subtítulo */
+    margin: 10px 0;
+}
+
+input[type="text"] {
+    width: 90%; /* Ancho completo */
+    padding: 10px; /* Relleno interno */
+    border: 1px solid #cccccc; /* Borde gris */
+    border-radius: 5px; /* Bordes redondeados */
+    margin: 10px 0; /* Margen */
+}
+
+button {
+    background-color: #FFAA00; /* Color de fondo del botón */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    padding: 10px; /* Relleno interno */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de mano al pasar */
+    font-size: 16px; /* Tamaño de fuente */
+    transition: all 0.3s; /* Transición suave */
+}
+
+button:hover {
+    background-color: #e09a00; /* Color de fondo del botón al pasar */
+}
+
+footer {
+    margin-top: 15px; /* Margen superior */
+    color: #666666; /* Color del texto del pie */
+    font-size: 14px; /* Tamaño de fuente */
+}
+
+
+/*NOTIFICACIONES*/
+.notificacion {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: none;
+    min-width: 250px;
+    text-align: center;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+}
+
+.notificacion.exito {
+    background-color: #4caf50; /* verde */
+}
+
+.notificacion.exito p{
+    color: rgb(255, 255, 255);
+}
+.notificacion.error {
+    background-color: #f44336; /* rojo */
+}
+.notificacion.error p{
+    color: rgb(255, 255, 255);
+}

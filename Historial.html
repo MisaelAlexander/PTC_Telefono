@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Historial</title>
+ <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="CSS/Historial.css">
+</head>
+<body>
+  <header class="header">
+    <button id="backBtn" class="back-btn" aria-label="Atrás">&#x276E;</button>
+    <h1>Historial</h1>
+  </header>
+  
+  <main>
+    <div class="title-controls">
+      <h2>Recientes</h2>
+      <div class="controls">
+        <div class="size-select">
+          <label for="selectSize">Mostrar:</label>
+          <select id="selectSize">
+            <option value="2">2</option>
+            <option value="5" selected>5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    
+    <ul id="historyList" class="history-list"></ul>
+    <div id="paginacion" class="paginacion"></div> 
+  </main>
+
+  <script type="module" src="JS/Controller/HistorialController.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visitas</title>
+  <link rel="stylesheet" href="CSS/style.css">
+  <link rel="stylesheet" href="CSS/Visitas.css">
+</head>
+<body>
+
+  <header class="app-header">
+    <h2>Visitas Programadas</h2>
+    <!-- Selector de tamaño de página -->
+    
+  </header>
+
+  <main class="app-main">
+    <h3>Mis Visitas</h3>
+
+    <div class="controls-bar">
+  <!-- Barra de búsqueda -->
+  <input type="text" id="searchTitle" placeholder="Buscar por título...">
+
+  <!-- Selector de tamaño de página -->
+  <select id="pageSize">
+    <option value="1">1</option>
+    <option value="2">2</option>
+    <option value="4" selected>4</option>
+    <option value="8">8</option>
+    <option value="10">10</option>
+  </select>
+</div>
+<div id="tipos-visita" class="tipos-bar"></div>
+
+    
+
+    <!-- Lista de visitas -->
+    <div class="request-list"></div>
+
+    <!-- Controles de paginación -->
+   <div class="pagination">
+  <span id="page-numbers"></span>
+</div>
+  </main>
+<nav class="bottom-nav" id="bottom-nav"></nav>
+
+
+  <script type="module" src="JS/Controller/VisitaController.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</body>
+</html>

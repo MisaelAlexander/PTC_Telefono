@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro</title>
+  <link rel="stylesheet" href="CSS/CrearUsuario.css" />
+</head>
+<body>
+  <div class="container">
+    <a href="login.html" class="back">&#x276E;</a>
+    <h2>REGISTRO</h2>
+    <p>Regístrate y crea tu cuenta</p>
+    <p>-Datos Personales</p>
+
+    <form id="registroForm">
+      Nombre 
+      <input type="text" id="nombre" placeholder="Nombre" required />
+      Apellido
+      <input type="text" id="apellido" placeholder="Apellido" required />
+      DUI
+      <input type="text" id="dui" placeholder="DUI" required />
+
+      <label for="departamento">Ubicacion</label>
+      <select id="departamento" name="departamento" class="form-control" required>
+        <option value="" disabled selected>Selecciona un departamento</option>
+      
+      </select>
+
+      <label for="rol">Tipo de Cuenta</label>
+      <select id="rol" name="rol" class="form-control" required>
+        <option value="" disabled selected>Selecciona un Rol</option>
+      </select>
+      Direccion
+      <input type="text" id="direccion" placeholder="Direccion" required />
+      Correo
+      <input type="email" id="correo" placeholder="ejemplo@gmail.com" required />
+      Teléfono
+      <input type="tel" id="telefono" placeholder="12345678" required />
+       Fecha de nacimiento  
+       <input type="date" id="fechaNacimiento" name="fechaNacimiento" required />
+       <br>
+      <label for="foto">Foto de Perfil</label>
+      <input type="file" id="foto" accept="image/*" />
+      <div class="preview-container">
+        <img id="preview" src="" alt="Vista previa" style="display: none;" />
+      </div>
+
+      <button type="submit" class="btn">Siguiente paso</button>
+    <!--Notificacion de respuesta-->
+    </form>
+  </div>
+<div id="notificacion" class="notificacion">
+    <p id="notificacionMensaje"></p>
+    </div>
+ <script type="module" src="JS/Controller/CrearUsuario1Controller.js"></script>
+</body>
+</html>

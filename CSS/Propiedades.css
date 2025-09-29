@@ -1,0 +1,292 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+html, body {
+  height: 100%;
+}
+.back {
+    color: #f5b700;
+    font-size: 24px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+body {
+  background-color: #fff;
+  padding: 10px;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER FIJO */
+.top-bar {
+  flex: 0 0 auto;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.top-bar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.top-bar input {
+  flex: 1;
+  padding: 8px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+/* BOTONES DE FILTROS HORIZONTALES */
+.filters {
+  display: flex;
+  flex-wrap: nowrap;     /* todo en una fila */
+  overflow-x: auto;      /* scroll horizontal */
+  gap: 10px;             /* espacio entre botones */
+  padding: 10px;
+  white-space: nowrap;   /* evita que bajen de línea */
+  scrollbar-width: none; /* oculta scroll en Firefox */
+}
+
+.filters::-webkit-scrollbar {
+  display: none; /* oculta scroll en Chrome/Safari */
+}
+
+.filters button {
+  flex: 0 0 auto;        /* evita que los botones se estiren */
+  padding: 10px 16px;
+  border: none;
+  border-radius: 20px;
+  background-color: #003366;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filters button:hover {
+  background-color: #0055aa;
+}
+
+
+/* SCROLLABLE CONTENT */
+.content-scroll {
+  flex: 1 1 auto;
+  overflow-y: auto;
+  padding-bottom: 10px;
+  margin-top: 10px;
+}
+
+/* TARJETAS */
+.card {
+  display: flex;
+  flex-direction: row;
+  background: #ffffff;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card img {
+  width: 50%;
+  height: auto;
+  object-fit: cover;
+}
+
+.info {
+  padding: 12px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #f9f9f9;
+}
+
+/* Estilos para la estrella favorito */
+.star-favorite {
+  font-size: 2rem;
+  cursor: pointer;
+  user-select: none;
+}
+.star-favorite input {
+  display: none;
+}
+.star-favorite label {
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+.star-favorite input:checked + label {
+  color: #F7AD19;
+}
+.star-favorite:hover {
+  transform: translateY(-4px);
+}
+
+.info h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: bold;
+}
+
+.info p {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #555;
+  line-height: 1.2;
+}
+
+.info p:nth-child(3) {
+  color: #d99100;
+  font-weight: bold;
+}
+
+
+/*NOTIFICACIONES*/
+/* NOTIFICACIONES */
+.notificacion {
+    position: fixed;
+    top: 20px;                 /* la subimos arriba */
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: none;
+    min-width: 250px;
+    text-align: center;
+    z-index: 9999;             /* se asegura de que quede encima de todo */
+    font-family: Arial, sans-serif;
+}
+
+
+.notificacion.exito {
+    background-color: #4caf50; /* verde */
+}
+
+.notificacion.exito p{
+    color: rgb(255, 255, 255);
+}
+.notificacion.error {
+    background-color: #f44336; /* rojo */
+}
+.notificacion.error p{
+    color: rgb(255, 255, 255);
+}
+
+
+/* Contenedor de controles */
+.controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+  padding: 0 10px;
+}
+
+/* Select de ubicación */
+.ubicacion-select {
+  flex: 1; /* ocupa más espacio */
+  display: flex;
+  flex-direction: column;
+}
+
+.ubicacion-select label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.ubicacion-select select {
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Select de tamaño (Mostrar) */
+.size-select {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.size-select label {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #333;
+}
+
+.size-select select {
+  padding: 8px 28px 8px 12px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  background-color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+/*Pagiancion*/
+
+/* Botones deshabilitados */
+.paginacion button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/*CAmbio de paginas*/
+/* Paginación estilo botones */
+.paginacion {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap; /* para que se ajuste en móviles */
+}
+
+.paginacion button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 10px;         /* bordes redondeados */
+  background-color: #003366;   /* mismo color que botones */
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease, transform 0.2s ease;
+}
+
+/* Botón activo de paginación */
+.paginacion button.activo {
+  background-color: #f7ad19;  /* color distinto, naranja/amarillo */
+  color: white;
+  transform: translateY(-2px); /* un pequeño efecto de elevación */
+}
+
+
+

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detalle de Casa</title>
+  <link rel="stylesheet" href="CSS/VistaCasa.css">
+</head>
+<body>
+  <header class="app-header">
+    <a href="#" onclick="window.history.back();" class="back">&#x276E;</a>
+    <h2>VISTA DE CASA</h2>
+  </header>
+
+  <main class="content-scroll">
+   <section class="image-slider">
+  <!-- Contenedor donde JS insertará las imágenes -->
+  <div class="slides-container"></div>
+
+  <!-- Contenedor de los puntos del slider -->
+  <div class="dots"></div>
+
+  <!-- Botones de navegación -->
+  <button class="prev">&#10094;</button>
+  <button class="next">&#10095;</button>
+</section>
+
+    <section class="seller-info">
+      <img class="avatar"></img>
+      <div>
+        <h3>Marco Merlos</h3>
+        <p class="username">MFMERLOS</p>
+      </div>
+    </section>
+
+    <section class="location-info">
+      <p class="address">Tipo de Inmueble</p>
+      <p class="username">Casa</p>
+      <p class="address">Ubicacion de la Casa</p>
+      <div class="map-box">
+        <iframe
+          id="map"
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3876.234937886472!2d-89.21924538459163!3d13.69291329044337!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8f633b83414a9f59%3A0x7c0d5b5f5af1fc7b!2sSan%20Salvador%2C%20El%20Salvador!5e0!3m2!1ses!2sus!4v1697938543210!5m2!1ses!2sus"
+          allowfullscreen=""
+          loading="lazy"
+        ></iframe>
+        <div class="house-info">
+          <p>🛏 3 Camas</p>
+          <p>🛁 2 Baños</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="description">
+      <p class="title">Descripción de la Casa</p>
+      <div class="descriptions">
+        <p>La casa se encuentra en San Tecla y es bastante bonita.</p>
+      </div>
+      <div class="price-buy">
+        <span class="price">$100,000.00</span>
+      </div>
+              <div class="btn-group">
+          <button id="orgBtn">Organizar Visita</button>
+          <button id="commentsBtn">Ver Comentarios</button>
+        </div>
+    </section>
+
+    <section class="contact-info">
+      <h3>Contactar al Vendedor</h3>
+      <p>
+        WhatsApp: <a href="https://wa.me:/70691620" class="contact-link" target="_blank">7069-1620</a>
+      </p>
+      <p>
+        Email: <a href="mailto:alex.riva2022@gmail.com" class="contact-link">alex.riva2022@gmail.com</a>
+      </p>
+    </section>
+  </main>
+
+  <script type="module" src="JS/Controller/VistaCasaController.js"></script>
+</body>
+</html>

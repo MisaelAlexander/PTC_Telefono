@@ -1,0 +1,248 @@
+/* Reset */
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+body {
+  font-family: 'Poppins', 'Helvetica Neue', Arial, sans-serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 16px;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.back-btn {
+  font-size: 24px;
+  background: none;
+  border: none;
+  color: #f5b700;
+  margin-right: 12px;
+  cursor: pointer;
+  padding: 8px;
+}
+
+.header h1 {
+  flex: 1; 
+  text-align: center;
+  font-size: 20px; 
+  font-weight: 600;
+  color: #003366;
+}
+
+/* CONTENEDOR DE TÍTULO Y CONTROLES */
+.title-controls {
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.title-controls h2 {
+  font-size: 18px; 
+  font-weight: 600;
+  color: #003366;
+  margin: 0;
+}
+
+/* CONTROLES */
+.controls {
+  display: flex;
+  align-items: center;
+}
+
+.size-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.size-select label {
+  font-size: 14px;
+  color: #003366;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.size-select select {
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  background-color: white;
+  font-size: 14px;
+  color: #003366;
+  min-width: 60px;
+}
+
+
+/* LISTA */
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+}
+
+/* TARJETAS DE HISTORIAL */
+.history-item {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  border-left: 4px solid #f5b700;
+}
+
+.history-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+}
+
+.history-item .text strong {
+  color: #003366;
+  font-size: 14px;
+  display: block;
+  margin-bottom: 6px;
+}
+
+.history-item .text p {
+  color: #495057;
+  font-size: 14px;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* PAGINACIÓN */
+.paginacion {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.pagination-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #003366;
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background-color: #002244;
+  transform: translateY(-1px);
+}
+
+.pagination-btn:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.pagination-btn.activo {
+  background-color: #f5b700;
+  color: #fff;
+}
+
+/* Estado vacío */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  margin-top: 40px;
+  background: #f8f9fa;
+  border-radius: 12px;
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-icon img {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+  color: #003366;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  font-size: 14px;
+  color: #6c757d;
+  line-height: 1.5;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+/* Responsive */
+@media (max-width: 380px) {
+  .title-controls {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+  }
+  
+  .title-controls h2 {
+    margin-bottom: 8px;
+    line-height: normal;
+  }
+  
+  .controls {
+    align-self: flex-end;
+    height: auto;
+  }
+  
+  .size-select {
+    height: auto;
+  }
+  
+  .size-select label {
+    line-height: normal;
+  }
+}
+/* Responsive para pantallas pequeñas */
+@media (max-width: 400px) {
+  .title-controls {
+    flex-wrap: wrap;
+    height: auto;
+    gap: 10px;
+  }
+  
+  .title-controls h2 {
+    line-height: normal;
+  }
+  
+  .size-select label {
+    line-height: normal;
+  }
+  
+  .controls {
+    margin-left: auto; /* Empuja los controles a la derecha */
+  }
+}

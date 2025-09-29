@@ -1,0 +1,408 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap");
+
+/* Reset global */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f5f5f5;
+    color: #333333;
+    margin: 0;
+    padding-bottom: 72px; /* espacio extra por el nav */
+}
+
+/* Header fijo */
+.app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1,
+.app-header h2 {
+    color: #003366;
+    font-size: 20px;
+}
+
+/* Main y contenedor */
+main {
+    margin: 80px auto 20px;
+    padding: 0 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Imagen de perfil */
+.profile-picture {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid #f5b700;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profile-picture img:hover {
+    transform: scale(1.05);
+}
+
+/* Tarjeta de perfil */
+.profile-card {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    box-shadow: 0 6px 20px rgba(0, 51, 102, 0.08);
+    transition: all 0.3s ease;
+}
+
+.profile-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 51, 102, 0.12);
+}
+
+/* Fila de información */
+.profile-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 12px 14px;
+    background-color: #ffffff;
+    border: 1px solid #e9ecef;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.profile-row:hover {
+    transform: translateX(2px);
+    box-shadow: 0 3px 10px rgba(0, 51, 102, 0.1);
+    border-color: #f5b700;
+}
+
+.profile-row h4 {
+    font-size: 14px;
+    color: #003366;
+    font-weight: 600;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.profile-row p {
+    font-size: 15px;
+    color: #495057;
+    margin: 0;
+    font-weight: 500;
+    text-align: left;
+}
+
+/* Iconos */
+.profile-row h4::before {
+    content: "▶";
+    color: #f5b700;
+    font-weight: bold;
+    font-size: 11px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.profile-row:hover h4::before {
+    transform: scale(1.2);
+    color: #003366;
+}
+
+/* Secciones */
+.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: white;
+    margin: 15px 0 8px 0;
+    padding: 10px 15px;
+    background-color: #003366;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 3px 10px rgba(0, 51, 102, 0.2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Inputs y selects */
+.profile-row input,
+.profile-row select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    background-color: #fff;
+    color: #495057;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.profile-row input:focus,
+.profile-row select:focus {
+    border-color: #f5b700;
+    box-shadow: 0 0 0 3px rgba(245,183,0,0.15), inset 0 2px 4px rgba(0,0,0,0.05);
+    transform: scale(1.02);
+}
+
+.profile-row input:disabled {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+    color: #6c757d;
+}
+
+/* Input file */
+.profile-row input[type="file"] {
+    background-color: #003366;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    width: auto;
+}
+
+.profile-row input[type="file"]:hover {
+    background-color: #f5b700;
+    color: #003366;
+    transform: scale(1.05);
+}
+
+/* Preview de foto */
+#previewFoto {
+    border: 3px solid #f5b700;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+#previewFoto:hover {
+    transform: scale(1.05);
+    border-color: #003366;
+}
+
+/* Botones agrupados */
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 15px;
+    width: 100%;
+}
+
+/* Botones generales (Actualizar, Historial, Guardar, Cerrar Sesión) */
+.buttons button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 15px;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 51, 102, 0.2);
+    background-color: #003366;
+    color: #ffffff;
+}
+.buttons button:hover {
+    background-color: #f5b700;
+    color: #003366;
+}
+
+
+/* Botón eliminar (rojo) */
+.btn-eliminar {
+    background-color: #f44336 !important;
+    color: white !important;
+}
+
+.btn-eliminar:hover {
+    background-color: #d32f2f !important;
+    transform: translateY(-2px) !important; 
+}
+
+/* Notificaciones*/
+.notificacion {
+    position: fixed;
+    top: 320px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: #fff;
+    padding: 12px 16px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: none;
+    min-width: 220px;
+    text-align: center;
+    z-index: 1000;
+}
+
+.notificacion.exito { background-color: #4caf50; }
+.notificacion.error { background-color: #f44336; }
+
+.confirm-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.btn-confirm, .btn-cancel {
+    flex: 1;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm {
+    background-color: #f5b700;
+    color: #003366;
+}
+
+.btn-confirm:hover {
+    background-color: #003366;
+    color: #f5b700;
+}
+
+.btn-cancel {
+    background-color: #d32f2f;
+    color: #fff;
+}
+
+.btn-cancel:hover {
+    background-color: #f44336;
+}
+
+/*Modal Confirm*/
+/*Modal de si o no*/
+.modal {
+    padding-top: 200px;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 20px; 
+}
+
+.modal-content {
+      margin-top: 150px; 
+    background-color: white;
+    border-radius: 16px; 
+    padding: 24px;
+    width: 80%;
+    max-width: 360px; 
+    text-align: center;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+    font-family: Arial, sans-serif;
+}
+
+.modal-buttons {
+    margin-top: 15px;
+    margin-left: 2px;
+    margin-right: 2px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px
+}
+
+.btn-si, .btn-no {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-si {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-no {
+    background-color: #f44336;
+    color: white;
+}
+.btn-no:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+/* Navegación inferior (NO TOCAR) porfa me costo darme cuenta que un pading en boy que faltaba el que toque esto lo saco del equipo*/
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: #ffffff;
+    border-top: 2px solid #e9ecef;
+    box-shadow: 0 -3px 10px rgba(0, 51, 102, 0.1);
+    z-index: 100;
+}
+
+.bottom-nav button {
+    width: 60px;
+    height: 60px;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    line-height: 0;
+    font-size: 0;
+    color: #003366;
+    transition: color 0.3s ease, filter 0.3s ease;
+}
+
+.bottom-nav button img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+}

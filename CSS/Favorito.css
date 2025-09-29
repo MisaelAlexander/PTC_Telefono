@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden; /* Evita scroll global */
+}
+
+/* Contenedor principal */
+.container {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* Header fijo */
+.app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  z-index: 100;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.app-header h1 {
+  color: #003366;
+  font-size: 22px;
+  margin-left: 20px;
+}
+
+/* Contenido con scroll adaptativo */
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  margin-top: 60px;           /* deja espacio del header */
+  margin-bottom: 70px;        /* deja espacio para el navbar */
+  padding: 16px;              /* aire alrededor */
+  gap: 16px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+/* ==== CONTROLES ==== */
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px;
+  background-color: #f9f9f9; 
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.controls label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #003366;
+}
+
+.controls select {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease, box-shadow 0.2s ease;
+}
+
+.controls select:hover,
+.controls select:focus {
+  border-color: #f7ad19;
+  box-shadow: 0 2px 6px rgba(247,173,25,0.3);
+  outline: none;
+}
+
+/* ==== TARJETAS DE FAVORITOS ==== */
+.card {
+  display: flex;
+  flex-direction: row;
+  background: #ffffff;
+  border-radius: 15px;
+  overflow: hidden;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s ease;
+  min-height: 140px;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card img {
+  width: 50%;
+  height: auto;
+  object-fit: cover;
+}
+
+.info {
+  padding: 16px;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #f9f9f9;
+}
+
+.info h3 {
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: bold;
+}
+
+.info p {
+  font-size: 13px;
+  margin-bottom: 6px;
+  color: #555;
+  line-height: 1.4;
+}
+
+.info p:nth-child(3) {
+  color: #d99100;
+  font-weight: bold;
+}
+
+/* Estrella de favorito */
+.star-favorite {
+  font-size: 1.8rem;
+  cursor: pointer;
+  user-select: none;
+  margin-top: 8px;
+  align-self: flex-end;
+}
+
+.star-favorite input {
+  display: none;
+}
+
+.star-favorite label {
+  color: #ccc;
+  transition: color 0.3s ease;
+}
+
+.star-favorite input:checked + label {
+  color: #F7AD19;
+}
+
+/* ==== PAGINACIÓN ==== */
+.paginacion {
+  margin-top: 20px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.paginacion button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 10px;
+  background-color: #003366;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease, transform 0.2s ease;
+}
+
+.paginacion button.activo {
+  background-color: #f7ad19;
+  transform: translateY(-2px);
+}
+/* Botones deshabilitados */
+.paginacion button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+/* ================= NAVBAR INFERIOR ================= */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 35px;
+  background: #ffffff;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #e0e0e0;
+  box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+/* Cada ítem del navbar */
+.bottom-nav a {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+/* Íconos */
+.bottom-nav a i {
+  font-size: 20px;
+  margin-bottom: 4px;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* Activo */
+.bottom-nav a.active {
+  color: #F7AD19;
+}
+
+.bottom-nav a.active i {
+  color: #F7AD19;
+  transform: scale(1.2);
+}
+
+/* Hover */
+.bottom-nav a:hover {
+  color: #F7AD19;
+}
+
+.bottom-nav a:hover i {
+  transform: scale(1.1);
+}
+
+/* ==== NOTIFICACIONES ==== */
+.notificacion {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #323232;
+  color: white;
+  padding: 15px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+  display: none;
+  min-width: 250px;
+  text-align: center;
+  z-index: 1000;
+}
+
+.notificacion.exito {
+  background-color: #4caf50;
+}
+
+.notificacion.error {
+  background-color: #f44336;
+}
+/* === ESTADO VACÍO PARA FAVORITOS === */
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  margin: 40px auto;
+  background: #f8f9fa;
+  border-radius: 16px;
+  max-width: 400px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.empty-icon {
+  font-size: 64px;
+  margin-bottom: 16px;
+  opacity: 0.6;
+  color: #f5b700;
+}
+
+.empty-state h3 {
+  font-size: 20px;
+  color: #003366;
+  margin-bottom: 12px;
+  font-weight: 600;
+}
+
+.empty-state p {
+  font-size: 15px;
+  color: #6c757d;
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 280px;
+}

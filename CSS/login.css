@@ -1,0 +1,188 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap");
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+    font-family: 'Inter', sans-serif;
+  background: #f2f4f7;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.login-box {
+  text-align: center;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1rem;
+}
+
+h2 {
+  color: #003366;
+  margin-bottom: 0.2rem;
+}
+
+p.subtitulo {
+  margin-top: 0;
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+}
+
+form {
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #003366;
+  font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+}
+
+.forgot {
+  text-align: right;
+  font-size: 0.9rem;
+  margin-top: -1rem;
+  margin-bottom: 1.5rem;
+}
+
+.forgot a {
+  color: #333;
+  text-decoration: none;
+}
+
+button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #f4b400;
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #e2a400;
+}
+
+.register {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+}
+
+.register a {
+  font-weight: bold;
+  color: #003366;
+  text-decoration: none;
+}
+
+.register a:hover {
+  text-decoration: underline;
+}
+
+/*NOTIFICACIONES*/
+.notificacion {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #323232;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    display: none;
+    min-width: 250px;
+    text-align: center;
+    z-index: 1000;
+    font-family: Arial, sans-serif;
+}
+
+.notificacion.exito {
+    background-color: #4caf50; /* verde */
+}
+
+.notificacion.exito p{
+    color: rgb(255, 255, 255);
+}
+.notificacion.error {
+    background-color: #f44336; /* rojo */
+}
+.notificacion.error p{
+    color: rgb(255, 255, 255);
+}
+/*Modal de si o no*/
+.modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    width: 80%;
+    max-width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    font-family: Arial, sans-serif;
+}
+
+.modal-buttons {
+    margin-top: 15px;
+    margin-left: 2px;
+    margin-right: 2px;
+    display: flex;
+    justify-content: space-around;
+    gap: 20px
+}
+
+.btn-si, .btn-no {
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.btn-si {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-no {
+    background-color: #f44336;
+    color: white;
+}
+.btn-no:hover {
+    background-color: #f44336;
+    color: white;
+}

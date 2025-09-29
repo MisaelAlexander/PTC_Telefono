@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Favoritos</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <link rel="stylesheet" href="CSS/Favorito.css">
+</head>
+<body>
+  <div class="container">
+    
+    <!-- Header fijo -->
+    <header class="app-header">
+      <h1 class="page-title">FAVORITOS</h1>
+    </header>
+
+    <!-- Contenido con scroll -->
+    <div class="content-wrapper">
+      
+      <!-- Controles -->
+      <div class="controls">
+        <label for="selectSize">Mostrar</label>
+        <select id="selectSize">
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="4" selected>4</option>
+          <option value="8">8</option>
+          <option value="10">10</option>
+        </select>
+      </div>
+
+      <!-- Aquí se cargarán los favoritos dinámicamente -->
+      <main class="content-scroll"></main>
+
+      <!-- Paginación -->
+      <div id="paginacion" class="paginacion"></div>
+    </div>
+  </div>
+
+  <!-- Espaciador + navbar -->
+  <div style="height: 40px;"></div>
+  <nav class="bottom-nav" id="bottom-nav"></nav>
+
+  <!-- Notificación flotante -->
+  <div id="notificacion" class="notificacion">
+    <p id="notificacionMensaje"></p>
+  </div>
+
+  <!-- Scripts -->
+
+  <script type="module" src="JS/Controller/FavoritosController.js"></script>  
+</body>
+</html>
+ 
