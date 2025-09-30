@@ -1,4 +1,4 @@
-import { renderUser, auth } from "../Controller/SessionController.js";
+import { renderUser, auth,role } from "../Controller/SessionController.js";
 import { obtenerFavoritos, eliminarFavorito, obtenerFotoInmueble } from "../Service/FavoritosService.js";
 import { guardarHistorial } from "../Service/HistorialService.js";
 
@@ -12,8 +12,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // ======= RENDERIZAR USUARIO Y BOTTOM MENU =======
     await renderUser();
 
-    if (!auth.ok) {
-        mostrarNotificacion("Debes iniciar sesión para ver tus favoritos", "error");
+    if (!auth.ok || !role.isUsuario) 
+        {
+    window.location.href = "index.html";
         return;
     }
 
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!favoritos || favoritos.length === 0) {
                 main.innerHTML = `
                     <div class="empty-state">
-                        <div class="empty-icon"><img src="IMG/Lista.png" alt="Informacion" style="object-fit:contain;"></div>
+                     <div class="empty-icon"><img src="IMG/Lista.png" alt="Informacion" style="object-fit:contain;"></div>
                         <h3>Aún no tienes favoritos</h3>
                         <p>Cuando marques propiedades como favoritas, aparecerán aquí.</p>
                     </div>

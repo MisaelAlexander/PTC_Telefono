@@ -5,7 +5,7 @@ const API_FOTO = "https://arqosapi-9796070a345d.herokuapp.com/Foto";
 // Obtener favoritos paginados por usuario
 export async function obtenerFavoritos(idUsuario, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_FAV}/Usuario/${idUsuario}?page=${page}&size=${size}`);
+    const resp = await fetch(`${API_FAV}/Usuario/${idUsuario}?page=${page}&size=${size}`, { credentials: 'include' });
     if (!resp.ok) throw new Error("Error al obtener favoritos");
     const json = await resp.json();
     return json.data || { content: [], totalPages: 1, pageNumber: 0 };
