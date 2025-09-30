@@ -5,7 +5,8 @@ import {
   obtenerInmueblePorId,
   obtenerFotosPorInmuebleId
 } from "../Service/CrearVisitaService.js";
-import { guardarHistorial } from "../Service/HistorialService.js"; // Importar el servicio de historial
+import { guardarHistorial } from "../Service/HistorialService.js";
+import { requireAuth, role, auth } from "./SessionController.js"; // Seguridad
 
 let currentDate = new Date();
 let selectedDate = null;
@@ -21,7 +22,20 @@ const months = [
 
 const defaultTimeSlots = ["09:00:00", "10:00:00", "11:00:00", "14:00:00", "15:00:00", "16:00:00", "17:00:00", "18:00:00"];
 
+// ==========================
+// Carga inicial con seguridad
+// ==========================
 document.addEventListener("DOMContentLoaded", async () => {
+  const oki = await requireAuth();
+  if (!oki) return;
+
+
+  // Restringir acceso a solo Usuario o Vendedor
+  if (!(role.isUsuario())) {
+    window.location.replace("index.html");
+    return;
+  }
+
   const params = new URLSearchParams(window.location.search);
   const idInmueble = params.get("id");
   if (!idInmueble) return console.error("⚠ No se encontró el idInmueble en la URL");
@@ -35,7 +49,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (propertyTitle) propertyTitle.textContent = inmuebleData.titulo || "Título no disponible";
     if (propertyLocation) propertyLocation.textContent = inmuebleData.ubicacion || "Ubicación no disponible";
 
-     // ===== Cargar primera foto en .property-image img =====
+    // ===== Cargar primera foto en .property-image img =====
     const fotos = await obtenerFotosPorInmuebleId(idInmueble);
     if (fotos.length > 0) {
       const firstPhotoUrl = fotos[0].foto;
@@ -71,7 +85,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.querySelectorAll("#notes").forEach(input => input.addEventListener("input", validateForm));
 });
 
-
 // ==========================
 // Utilidades de fechas locales
 // ==========================
@@ -97,7 +110,7 @@ function formatTime(time) {
 }
 
 // ==========================
-// Sistema de notificaciones (adaptado del login)
+// Sistema de notificaciones
 // ==========================
 function mostrarNotificacion(mensaje, tipo = "exito") {
   const notificacion = document.getElementById("notificacion");
@@ -107,7 +120,6 @@ function mostrarNotificacion(mensaje, tipo = "exito") {
   notificacion.className = `notificacion ${tipo}`;
   notificacion.style.display = "block";
 
-  // Desaparece automáticamente después de 2 segundos
   setTimeout(() => {
     notificacion.style.display = "none";
   }, 2000);
@@ -145,21 +157,10 @@ function mostrarModal(mensaje) {
 }
 
 // ==========================
-// Función para guardar en el historial
+// Guardar en historial
 // ==========================
 async function guardarAgendamientoHistorial(usuarioData, fechaVisita, horaVisita) {
   try {
-    // Formatear la fecha y hora actual
-    const ahora = new Date();
-    const fechaHoraActual = ahora.toLocaleString('es-ES', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
-    });
-    
-    // Formatear la fecha de la visita
     const fechaVisitaFormateada = new Date(fechaVisita);
     const fechaVisitaStr = fechaVisitaFormateada.toLocaleDateString('es-ES', {
       weekday: 'long',
@@ -167,17 +168,16 @@ async function guardarAgendamientoHistorial(usuarioData, fechaVisita, horaVisita
       month: 'long',
       year: 'numeric'
     });
-    
-    // Ajustar la fecha para guardar en el historial (sumar un día)
+
     const fechaManana = new Date();
     fechaManana.setDate(fechaManana.getDate() + 1);
-    
+
     const datosHistorial = {
       descripcion: `Agendó visita para ${fechaVisitaStr} a las ${formatTime(horaVisita)}, para el inmueble "${inmuebleData.titulo}"`,
       fecha: fechaManana.toISOString(),
       idUsuario: usuarioData.idusuario
     };
-    
+
     await guardarHistorial(datosHistorial);
     console.log("Historial de agendamiento guardado exitosamente");
   } catch (error) {
@@ -214,11 +214,21 @@ async function cargarTiposVisita() {
 }
 
 // ==========================
-// Cargar visitas ocupadas desde API
+// Cargar disponibilidad
 // ==========================
 async function cargarDisponibilidad(idInmueble) {
   try {
-    const visitas = await obtenerVisitasPorInmueble(idInmueble);
+    let visitas = await obtenerVisitasPorInmueble(idInmueble);
+
+    // Asegurarnos de que sea un array
+    if (!Array.isArray(visitas)) {
+      if (visitas && Array.isArray(visitas.data)) {
+        visitas = visitas.data; // si tu API devuelve {data: [...]}
+      } else {
+        visitas = []; // ningún registro
+      }
+    }
+
     occupiedTimes = {};
 
     visitas.forEach(v => {
@@ -232,16 +242,17 @@ async function cargarDisponibilidad(idInmueble) {
       occupiedTimes[fecha].add(hora);
     });
 
+    // Convertir sets a arrays
     for (let fecha in occupiedTimes) {
       occupiedTimes[fecha] = Array.from(occupiedTimes[fecha]);
     }
 
-    console.log("Visitas ocupadas por día:", occupiedTimes);
   } catch (error) {
     console.error("Error cargando disponibilidad:", error);
     mostrarNotificacion("Error al cargar disponibilidad", "error");
   }
 }
+
 
 // ==========================
 // Verificar slot disponible
@@ -284,24 +295,20 @@ function generarCalendario() {
     const today = new Date(); 
     today.setHours(0,0,0,0);
 
-    // Marcar hoy
     if (dateObj.getTime() === today.getTime()) dayBtn.classList.add("today");
 
-    // Fecha pasada
     if (dateObj < today) {
       dayBtn.classList.add("disabled");
       dayBtn.disabled = true;
     } else {
-      // Revisar si hay slots disponibles
       const dateStr = formatDate(dateObj);
       const horasOcupadas = (occupiedTimes[dateStr] || []).map(h => h.length === 5 ? h + ":00" : h);
       const availableSlots = defaultTimeSlots.filter(t => !horasOcupadas.includes(t));
 
-      if (availableSlots.length === 0) { // Si no hay slots libres
+      if (availableSlots.length === 0) {
         dayBtn.classList.add("occupied");
         dayBtn.disabled = true;
       } else if (horasOcupadas.length > 0) {
-        // Parcialmente ocupados
         dayBtn.classList.add("partial-occupied");
         dayBtn.title = `${horasOcupadas.length} hora(s) ocupada(s)`;
         dayBtn.addEventListener("click", () => selectDate(dateObj, dayBtn));
@@ -321,7 +328,6 @@ function generarCalendario() {
 function selectDate(date, element) {
   document.querySelectorAll(".calendar-day.selected").forEach(d => d.classList.remove("selected"));
   element.classList.add("selected");
-  // SOLO fecha local sin hora
   selectedDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
   selectedTime = null;
   actualizarTimeSlots();
@@ -330,7 +336,7 @@ function selectDate(date, element) {
 }
 
 // ==========================
-// Actualizar slots por fecha
+// Actualizar slots
 // ==========================
 function actualizarTimeSlots() {
   const timeSlotsContainer = document.getElementById("timeSlots");
@@ -420,12 +426,9 @@ async function handleSubmit(e) {
     mostrarNotificacion("La fecha y hora seleccionadas ya están ocupadas.", "error");
     return;
   }
+   const usuario = auth.user;
 
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-  if (!usuario) {
-    mostrarNotificacion("Debes iniciar sesión para reservar.", "error");
-    return;
-  }
+
 
   const typeRadio = document.querySelector('input[name="visitType"]:checked');
   if (!typeRadio) {
@@ -433,22 +436,19 @@ async function handleSubmit(e) {
     return;
   }
 
-  // Clonamos la fecha y le sumamos un día
   const fechaParaEnviar = new Date(selectedDate);
   fechaParaEnviar.setDate(fechaParaEnviar.getDate());
 
   const visita = {
-    fecha: formatDate(fechaParaEnviar), // Usamos la fecha incrementada
+    fecha: formatDate(fechaParaEnviar),
     hora: selectedTime,
     descripcion: document.getElementById("notes").value || "",
     idestado: 3,
     idinmueble: inmuebleData.idinmuebles,
     idvendedor: inmuebleData.idusuario,
-    idcliente: usuario.idusuario,
+    idcliente: usuario.id,
     idtipovisita: parseInt(typeRadio.value)
   };
-
-  console.log("Visita que se enviará:", visita);
 
   const confirmBtn = document.getElementById("confirmBtn");
   const btnText = document.getElementById("btnText");
@@ -461,16 +461,12 @@ async function handleSubmit(e) {
   try {
     const result = await registrarVisita(visita);
     if (result && result.idvisita) {
-      // Guardar en el historial
       await guardarAgendamientoHistorial(usuario, selectedDate, selectedTime);
-      
-      // Mensaje personalizado con el título de la propiedad
       mostrarNotificacion(`Has agendado una visita para ${inmuebleData.titulo}`, "exito");
 
       await cargarDisponibilidad(inmuebleData.idinmuebles);
       generarCalendario();
 
-      // volver a seleccionar la misma fecha
       if (selectedDate) {
         const day = selectedDate.getDate();
         const btn = [...document.querySelectorAll(".calendar-day")]
