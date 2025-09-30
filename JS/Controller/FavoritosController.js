@@ -114,6 +114,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
                 card.addEventListener("click", () => {
                     guardarVistaEnHistorial(fav);
+                    
                     window.location.href = `Vistacasa.html?id=${fav.idInmueble}`;
                 });
 
