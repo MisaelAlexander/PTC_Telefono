@@ -1,5 +1,6 @@
   // Inmuebled
 const API_INM = "https://arqosapi-9796070a345d.herokuapp.com/Inmueble";
+const API_USE = "https://arqosapi-9796070a345d.herokuapp.com/Usuario";
 
 //Funcion para obtener inmuebles por ubicación(para uusarios)
 export async function obtenerInmueblesPorUbicacion(ubicacion, page = 0, size = 1) {
@@ -142,4 +143,18 @@ export async function obtenerFotoInmueble(idInmueble)
     console.error("Error al cargar foto:", err);
     return "IMG/Imativa_Casa_Carrasco_0013.webp"; // fallback
   }
+}
+
+
+//Obtener informacion del usuario
+export async function obtenerUsuarioPorId(id) {
+    try {
+        const response = await fetch(`${API_USE}/Buscar/${id}`, { credentials: 'include' });
+        const data = await response.json();
+        if (!response.ok || !data.status) throw new Error(data.messageA || "Error al obtener usuario");
+        return data.data;
+    } catch (error) {
+        console.error("Error en obtenerUsuarioPorId:", error);
+        return null;
+    }
 }

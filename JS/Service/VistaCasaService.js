@@ -1,11 +1,11 @@
 // JS/Service/VistaCasaService.js
-const API_URL = "https://arqosapi-9796070a345d.herokuapp.com/Inmueble"; // Ajusta si tu backend corre en otro puerto o ruta
-const API_IMG = "https://arqosapi-9796070a345d.herokuapp.com/Foto"; // Ajusta si tu backend corre en otro puerto o ruta
+const API_URL = "https://arqosapi-9796070a345d.herokuapp.com/Inmueble"; 
+const API_IMG = "https://arqosapi-9796070a345d.herokuapp.com/Foto"; 
 
 // Obtener inmueble por ID
 export async function obtenerInmueblePorId(id) {
   try {
-    const response = await fetch(`${API_URL}/BuscarPorId/${id}`);
+    const response = await fetch(`${API_URL}/BuscarPorId/${id}`,{credentials:"include"});
     if (!response.ok) {
       throw new Error("Error en la petición");
     }
@@ -27,7 +27,7 @@ export async function obtenerInmueblePorId(id) {
 // Obtener inmueble por ID + fotos
 export async function obtenerFotosPorInmuebleId(id) {
   try {
-    const resp = await fetch(`${API_IMG}/Mostrar/${id}`,{credentials: 'include'});
+    const resp = await fetch(`${API_IMG}/Mostrar/${id}`,{credentials:"include"});
     if (!resp.ok) throw new Error("Error al obtener fotos");
     const fotos = await resp.json();
     return Array.isArray(fotos) ? fotos : [];
@@ -36,3 +36,4 @@ export async function obtenerFotosPorInmuebleId(id) {
     return [];
   }
 }
+
