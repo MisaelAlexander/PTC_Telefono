@@ -59,6 +59,22 @@ document.addEventListener("DOMContentLoaded", async () => {
     const casa = inmuebles[0];
     const foto = await obtenerFotoInmueble(casa.idinmuebles);
 
+    // ===============================
+    // VERIFICAR SI YA ESTÁ EN FAVORITOS
+    // ===============================
+    let esFavorito = false;
+    let idFavoritoExistente = null;
+
+    if (role.isUsuario()) {
+      const favoritos = await obtenerFavoritos(usuario.idusuario);
+      const favoritoExistente = favoritos.find(fav => fav.idinmuebles === casa.idinmuebles);
+      
+      if (favoritoExistente) {
+        esFavorito = true;
+        idFavoritoExistente = favoritoExistente.idfavoritos;
+      }
+    }
+
     // Pintamos la carta con el inmueble
     cartaContainer.innerHTML = `
       <div class="card" id="card${casa.idinmuebles}">
@@ -66,7 +82,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="info">
           ${role.isUsuario() ? `
           <div class="star-favorite">
-            <input type="checkbox" id="fav${casa.idinmuebles}" />
+            <input type="checkbox" id="fav${casa.idinmuebles}" ${esFavorito ? 'checked' : ''} />
             <label for="fav${casa.idinmuebles}">&#9733;</label>
           </div>` : ""}
           <h3>${casa.titulo}</h3>
@@ -95,11 +111,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
     }
 
-    // Evento click en la card completa
+    // Evento click en la card completa (EXCLUYENDO la estrella)
     const card = document.getElementById(`card${casa.idinmuebles}`);
-    card.addEventListener("click", () => {
-      guardarVistaEnHistorial(casa);
-      window.location.href = `VistaCasa.html?id=${casa.idinmuebles}`;
+    card.addEventListener("click", (e) => {
+      // Verificar si el click NO fue en la estrella o sus elementos hijos
+      if (!e.target.closest('.star-favorite')) {
+        guardarVistaEnHistorial(casa);
+        window.location.href = `VistaCasa.html?id=${casa.idinmuebles}`;
+      }
     });
 
     // ===============================
@@ -142,36 +161,43 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
 
       const checkbox = document.getElementById(`fav${casa.idinmuebles}`);
+      const starContainer = checkbox.closest('.star-favorite');
 
-// Evitar que el click en la estrella abra la card
-checkbox.addEventListener("click", (e) => {
-  e.stopPropagation();
-});
-
-// Evento cuando cambia el estado del checkbox
-checkbox.addEventListener("change", async (e) => {
-  e.stopPropagation(); 
-  if (e.target.checked) {
-    const favorito = await guardarFavorito(usuario.idusuario, casa.idinmuebles);
-    if (favorito) {
-      e.target.dataset.idfavorito = favorito.idFavorito;
-      guardarFavoritosHistorial(casa);
-    } else {
-      e.target.checked = false;
-    }
-  } else {
-    const idFavorito = e.target.dataset.idfavorito;
-    if (idFavorito) {
-      const eliminado = await eliminarFavorito(idFavorito);
-      if (eliminado) {
-        delete e.target.dataset.idfavorito;
-        eliminarFavoritosHistorial(casa);
-      } else {
-        e.target.checked = true;
+      // Si ya estaba en favoritos, guardamos el id en el dataset
+      if (esFavorito && idFavoritoExistente) {
+        checkbox.dataset.idfavorito = idFavoritoExistente;
       }
-    }
-  }
-});
+
+      // Prevenir que el click en la estrella active el evento de la card
+      starContainer.addEventListener("click", (e) => {
+        e.stopPropagation();
+      });
+
+      // Evento cuando cambia el estado del checkbox
+      checkbox.addEventListener("change", async (e) => {
+        if (e.target.checked) {
+          // Agregar a favoritos
+          const favorito = await guardarFavorito(usuario.idusuario, casa.idinmuebles);
+          if (favorito) {
+            e.target.dataset.idfavorito = favorito.idFavorito;
+            guardarFavoritosHistorial(casa);
+          } else {
+            e.target.checked = false;
+          }
+        } else {
+          // Eliminar de favoritos
+          const idFavorito = e.target.dataset.idfavorito;
+          if (idFavorito) {
+            const eliminado = await eliminarFavorito(idFavorito);
+            if (eliminado) {
+              delete e.target.dataset.idfavorito;
+              eliminarFavoritosHistorial(casa);
+            } else {
+              e.target.checked = true;
+            }
+          }
+        }
+      });
     }
     // ===============================
 
@@ -185,15 +211,8 @@ checkbox.addEventListener("change", async (e) => {
       }
     });
 
-    // Evitar que clicks en botones internos disparen la card
-    document.addEventListener("click", (e) => {
-      if (e.target.closest(".star-favorite") || e.target.closest(".btn-eliminar")) {
-        e.stopPropagation();
-      }
-    });
-
   } catch (error) {
-    console.error("Error en MenuController:", error);
-    // window.location.href = "login.html";
+
+     window.location.href = "login.html";
   }
 });
