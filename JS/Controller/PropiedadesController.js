@@ -19,24 +19,31 @@ import {
 } from "../Service/PropiedadesService.js";
 
 import { guardarHistorial } from "../Service/HistorialService.js";
+import { requireAuth, auth, role } from "./SessionController.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-  const usuario = JSON.parse(localStorage.getItem("usuario"));
-   console.log("Datos del usuario:", userData);
-  if (!usuario) {
-    window.location.href = "login.html";
+  const ok = await requireAuth();
+  if (!ok) {
+    window.location.href = "index.html";
     return;
   }
 
-  const rol = usuario.rol; // "Usuario" o "Vendedor"
+  const usuario = auth.user;
 
   const selectSize = document.getElementById("selectSize");
   const ubicacionSelect = document.getElementById("ubicacionSelect");
   const buscador = document.getElementById("buscadorInput");
-  const btnBuscar = document.getElementById("btnBuscar");
   const main = document.querySelector(".content-scroll");
   const pagContainer = document.getElementById("paginacion");
   const filtersContainer = document.getElementById("filters");
+
+  const notificacion = document.getElementById("notificacion");
+  const notificacionMensaje = document.getElementById("notificacionMensaje");
+
+  const modalConfirm = document.getElementById("modalConfirm");
+  const modalMensaje = document.getElementById("modalMensaje");
+  const modalSi = document.getElementById("modalSi");
+  const modalNo = document.getElementById("modalNo");
 
   let currentPage = 0;
   let currentSize = parseInt(selectSize.value);
@@ -46,13 +53,36 @@ document.addEventListener("DOMContentLoaded", async () => {
   let ubicacion = null;
   let textoBusqueda = "";
 
+  let favoritosUsuario = [];
+  if (role.isUsuario()) {
+    favoritosUsuario = await obtenerFavoritos(usuario.id);
+  }
+
   const params = new URLSearchParams(window.location.search);
   if (params.has("tipo")) tipo = params.get("tipo");
   if (params.has("ubicacion")) ubicacion = params.get("ubicacion");
 
-  // Favoritos solo para usuario
-  let favoritosUsuario = [];
-  if (rol === "Usuario") favoritosUsuario = await obtenerFavoritos(usuario.idusuario);
+  // Función para mostrar notificación
+  function mostrarNotificacion(mensaje, tipo = "info", tiempo = 3000) {
+    notificacionMensaje.textContent = mensaje;
+    notificacion.className = `notificacion show ${tipo}`;
+    setTimeout(() => {
+      notificacion.className = "notificacion";
+    }, tiempo);
+  }
+
+  // Función de confirmación con modal (para eliminar o actualizar)
+  function confirmarPregunta(mensaje) {
+    return new Promise((resolve) => {
+      modalMensaje.textContent = mensaje;
+      modalConfirm.style.display = "flex";
+
+      const cerrar = () => { modalConfirm.style.display = "none"; };
+
+      modalSi.onclick = () => { cerrar(); resolve(true); };
+      modalNo.onclick = () => { cerrar(); resolve(false); };
+    });
+  }
 
   // Cargar tipos como botones
   try {
@@ -90,9 +120,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (error) {
     console.error("Error cargando tipos:", error);
+    mostrarNotificacion("Error cargando tipos", "error");
   }
 
-  // Cargar ubicaciones en select
+  // Cargar ubicaciones
   try {
     const ubicaciones = await obtenerUbicaciones();
     ubicaciones.forEach(u => {
@@ -101,7 +132,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       opt.textContent = u.ubicacion;
       ubicacionSelect.appendChild(opt);
     });
-
     if (ubicacion) ubicacionSelect.value = ubicacion;
 
     ubicacionSelect.addEventListener("change", () => {
@@ -113,6 +143,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   } catch (error) {
     console.error("Error cargando ubicaciones:", error);
+    mostrarNotificacion("Error cargando ubicaciones", "error");
   }
 
   // Función debounce
@@ -135,16 +166,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   }, 250);
   buscador.addEventListener("input", ejecutarBusqueda);
 
-  // Historial
   async function guardarVistaEnHistorial(casa, accion) {
-    if (!usuario || rol !== "Usuario") return;
+    if (!usuario || !role.isUsuario()) return;
     try {
       const fechaManana = new Date();
       fechaManana.setDate(fechaManana.getDate() + 1);
       await guardarHistorial({
         descripcion: `Has ${accion} la casa "${casa.titulo}"`,
         fecha: fechaManana.toISOString(),
-        idUsuario: usuario.idusuario
+        idUsuario: usuario.id
       });
     } catch (error) { console.error(error); }
   }
@@ -155,18 +185,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     try {
       let response;
 
-      if (rol === "Usuario") {
+      if (role.isUsuario()) {
         if (textoBusqueda) response = await mostrarInmueblesPorBusqueda(textoBusqueda, page, size);
         else if (tipo && ubicacion) response = await mostrarInmueblesPorUbiYTipo(ubicacion, tipo, page, size);
         else if (tipo) response = await mostrarInmueblesPorTipo(tipo, page, size);
         else if (ubicacion) response = await mostrarInmueblesPorUbi(ubicacion, page, size);
         else response = await mostrarInmuebles(page, size);
-      } else if (rol === "Vendedor") {
-        if (textoBusqueda) response = await mostrarInmueblesPorTituloYUser(textoBusqueda, usuario.idusuario, page, size);
-        else if (tipo && ubicacion) response = await mostrarInmueblesPorUbiYTipoYUser(ubicacion, tipo, usuario.idusuario, page, size);
-        else if (tipo) response = await mostrarInmueblesPorTipYUser(tipo, usuario.idusuario, page, size);
-        else if (ubicacion) response = await mostrarInmueblesPorUbiYUser(ubicacion, usuario.idusuario, page, size);
-        else response = await mostrarInmueblesPorUsuario(usuario.idusuario, page, size);
+
+      } else if (role.isVendedor()) {
+        if (textoBusqueda) response = await mostrarInmueblesPorTituloYUser(textoBusqueda, usuario.id, page, size);
+        else if (tipo && ubicacion) response = await mostrarInmueblesPorUbiYTipoYUser(ubicacion, tipo, usuario.id, page, size);
+        else if (tipo) response = await mostrarInmueblesPorTipYUser(tipo, usuario.id, page, size);
+        else if (ubicacion) response = await mostrarInmueblesPorUbiYUser(ubicacion, usuario.id, page, size);
+        else response = await mostrarInmueblesPorUsuario(usuario.id, page, size);
       }
 
       if (!response || !response.content || response.content.length === 0) {
@@ -174,8 +205,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     <div class="no-resultados-icon"><ion-icon name="home-outline"></ion-icon></div>
     <p>No hay inmuebles disponibles</p>
     <span>Intenta cambiar los filtros o la búsqueda</span>
-  </div>
-`;
+  </div>`;
         pagContainer.innerHTML = "";
         return;
       }
@@ -183,105 +213,105 @@ document.addEventListener("DOMContentLoaded", async () => {
       const inmuebles = response.content;
       totalPages = response.totalPages;
       currentPage = response.pageNumber;
+      console.log("Inmuebles cargados:", inmuebles);
+      for (let casa of inmuebles) {
+        const foto = await obtenerFotoInmueble(casa.idinmuebles);
+        const card = document.createElement("section");
+        card.classList.add("card", "carta");
+        card.innerHTML = `
+          <img src="${foto}" alt="${casa.titulo}" />
+          <div class="info">
+            ${role.isUsuario() ? `
+            <div class="star-favorite">
+              <input type="checkbox" id="fav${casa.idinmuebles}" />
+              <label for="fav${casa.idinmuebles}">&#9733;</label>
+            </div>` : ""}
+            <h3>${casa.titulo}</h3>
+            <p>Ubicación: ${casa.ubicacion}</p>
+            <p>Precio: $${casa.precio.toLocaleString()}</p>
+            <p>${casa.habitaciones} habitaciones, ${casa.banios} baños</p>
+            ${role.isVendedor() ? `
+            <div class="acciones-vendedor">
+              <button class="btn-actualizar">Actualizar</button>
+              <button class="btn-eliminar">Eliminar</button>
+            </div>` : "" }
+          </div>
+        `;
+        main.appendChild(card);
 
-     for (let casa of inmuebles) {
-  const foto = await obtenerFotoInmueble(casa.idinmuebles);
-  const card = document.createElement("section");
-  card.classList.add("card", "carta");
-  card.innerHTML = `
-    <img src="${foto}" alt="${casa.titulo}" />
-    <div class="info">
-      ${rol === "Usuario" ? `
-      <div class="star-favorite">
-        <input type="checkbox" id="fav${casa.idinmuebles}" />
-        <label for="fav${casa.idinmuebles}">&#9733;</label>
-      </div>` : ""}
-      <h3>${casa.titulo}</h3>
-      <p>Ubicación: ${casa.ubicacion}</p>
-      <p>Precio: $${casa.precio.toLocaleString()}</p>
-      <p>${casa.habitaciones} habitaciones, ${casa.banios} baños</p>
-      ${rol === "Vendedor" ? `
-      <div class="acciones-vendedor">
-        <button class="btn-actualizar">Actualizar</button>
-        <button class="btn-eliminar">Eliminar</button>
-      </div>` : ""}
-    </div>
-  `;
-  main.appendChild(card);
+        card.addEventListener("click", () => {
+          guardarVistaEnHistorial(casa, "visto");
+          window.location.href = `Vistacasa.html?id=${casa.idinmuebles}`;
+        });
 
-  // Acción general de click en la card
-  card.addEventListener("click", () => {
-    guardarVistaEnHistorial(casa, "visto");
-    window.location.href = `VistaCasa.html?id=${casa.idinmuebles}`;
-  });
+        if (role.isVendedor()) {
+          const btnActualizar = card.querySelector(".btn-actualizar");
+          const btnEliminar = card.querySelector(".btn-eliminar");
 
-  // Si es vendedor, botones actualizar/eliminar
-  if (rol === "Vendedor") {
-    const btnActualizar = card.querySelector(".btn-actualizar");
-    const btnEliminar = card.querySelector(".btn-eliminar");
+          // Confirmación al actualizar
+          btnActualizar.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const confirmado = await confirmarPregunta(`¿Deseas actualizar "${casa.titulo}"?`);
+            if (confirmado) window.location.href = `Publicar.html?id=${casa.idinmuebles}`;
+          });
 
-    // Evitamos que al dar click en botones se abra la vista
- btnActualizar.addEventListener("click", (e) => {
-  e.stopPropagation();
-  // Redirigir al formulario de edición pasando el ID
-  window.location.href = `Publicar.html?id=${casa.idinmuebles}`;
-});
+          // Confirmación al eliminar
+          btnEliminar.addEventListener("click", async (e) => {
+            e.stopPropagation();
+            const confirmado = await confirmarPregunta(`¿Seguro que deseas eliminar "${casa.titulo}"?`);
+            if (!confirmado) return;
 
-    btnEliminar.addEventListener("click", async (e) => {
-  e.stopPropagation();
-  const confirmado = confirm(`¿Seguro que deseas eliminar "${casa.titulo}"?`);
-  if (!confirmado) return;
+            const eliminado = await eliminarInmueble(casa.idinmuebles);
+            if (eliminado) {
+              mostrarNotificacion("Inmueble eliminado correctamente", "exito");
+              card.remove();
+            } else {
+              mostrarNotificacion("Ocurrió un error al eliminar el inmueble", "error");
+            }
+          });
+        }
 
-  const eliminado = await eliminarInmueble(casa.idinmuebles);
-  if (eliminado) {
-    alert("Inmueble eliminado correctamente");
-    card.remove(); // quita la card de la vista
-    //podemos refrescar pero asi es mas corto
-    // cargarInmuebles(currentPage, currentSize);
-  } else {
-    alert("Ocurrió un error al eliminar el inmueble");
-  }
-});
+        if (role.isUsuario()) {
+          const checkbox = card.querySelector(`#fav${casa.idinmuebles}`);
+          const label = card.querySelector(`label[for="fav${casa.idinmuebles}"]`);
+          checkbox.addEventListener("click", (e) => e.stopPropagation());
+          label.addEventListener("click", (e) => e.stopPropagation());
 
-  }
+          const favoritoExistente = favoritosUsuario.find(fav => fav.idInmueble === casa.idinmuebles);
+          if (favoritoExistente) {
+            checkbox.checked = true;
+            checkbox.dataset.idFavorito = favoritoExistente.idFavorito;
+          }
 
-  // Si es usuario, lógica de favoritos
-  if (rol === "Usuario") {
-    const checkbox = card.querySelector(`#fav${casa.idinmuebles}`);
-    const label = card.querySelector(`label[for="fav${casa.idinmuebles}"]`);
-    checkbox.addEventListener("click", (e) => e.stopPropagation());
-    label.addEventListener("click", (e) => e.stopPropagation());
-
-    const favoritoExistente = favoritosUsuario.find(fav => fav.idInmueble === casa.idinmuebles);
-    if (favoritoExistente) {
-      checkbox.checked = true;
-      checkbox.dataset.idFavorito = favoritoExistente.idFavorito;
-    }
-
-    checkbox.addEventListener("change", async (e) => {
-      if (!usuario) { alert("Debes iniciar sesión para guardar favoritos"); e.target.checked = false; return; }
-      if (e.target.checked) {
-        const nuevoFav = await guardarFavorito(usuario.idusuario, casa.idinmuebles);
-        if (nuevoFav) checkbox.dataset.idFavorito = nuevoFav.idFavorito;
-        guardarVistaEnHistorial(casa, "agregado de favoritos");
-      } else {
-        const idFavorito = checkbox.dataset.idFavorito;
-        if (idFavorito) await eliminarFavorito(idFavorito);
-        guardarVistaEnHistorial(casa, "eliminado de favoritos");
+          checkbox.addEventListener("change", async (e) => {
+            if (!usuario) { 
+              mostrarNotificacion("Debes iniciar sesión para guardar favoritos", "info"); 
+              e.target.checked = false; 
+              return; 
+            }
+            if (e.target.checked) {
+              const nuevoFav = await guardarFavorito(usuario.id, casa.idinmuebles);
+              if (nuevoFav) checkbox.dataset.idFavorito = nuevoFav.idFavorito;
+              guardarVistaEnHistorial(casa, "agregado de favoritos");
+              mostrarNotificacion("Agregado a favoritos", "exito");
+            } else {
+              const idFavorito = checkbox.dataset.idFavorito;
+              if (idFavorito) await eliminarFavorito(idFavorito);
+              guardarVistaEnHistorial(casa, "eliminado de favoritos");
+              mostrarNotificacion("Eliminado de favoritos", "info");
+            }
+          });
+        }
       }
-    });
-  }
-}
-
 
       actualizarPaginacion();
     } catch (error) {
       console.error(error);
       main.innerHTML = `<div class="no-resultados error"><p>Error cargando inmuebles, intenta nuevamente.</p></div>`;
+      mostrarNotificacion("Error cargando inmuebles, intenta nuevamente", "error");
     }
   }
 
-  // Paginación
   function actualizarPaginacion() {
     pagContainer.innerHTML = "";
     const maxButtons = 5;
@@ -319,6 +349,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     cargarInmuebles(currentPage, currentSize);
   });
 
-  // Primera carga
   cargarInmuebles();
 });

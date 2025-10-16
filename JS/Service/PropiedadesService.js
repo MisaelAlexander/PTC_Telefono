@@ -11,7 +11,7 @@ const API_UBI = "https://arqosapi-9796070a345d.herokuapp.com/Ubicacion";
 // Obtener ubicaciones
 export async function obtenerUbicaciones() {
   try {
-    const resp = await fetch(`${API_UBI}/Mostrar`,{credentials: 'include'});
+    const resp = await fetch(`${API_UBI}/Mostrar`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error al obtener ubicaciones");
     const json = await resp.json();
     return json.data;
@@ -24,7 +24,7 @@ export async function obtenerUbicaciones() {
 // Obtener todos los tipos
 export async function obtenerTipos() {
   try {
-    const resp = await fetch(`${API_TIP}/Mostrar`,{credentials: 'include'});
+    const resp = await fetch(`${API_TIP}/Mostrar`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error obteniendo tipos");
     const data = await resp.json();
     return data;
@@ -37,7 +37,7 @@ export async function obtenerTipos() {
 // Obtener foto principal de un inmueble
 export async function obtenerFotoInmueble(idInmueble) {
   try {
-    const resp = await fetch(`http://localhost:8080/Foto/Mostrar/${idInmueble}`,{credentials: 'include'});
+    const resp = await fetch(`https://arqosapi-9796070a345d.herokuapp.com/Foto/Mostrar/${idInmueble}`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error al obtener fotos");
     const fotos = await resp.json();
     return fotos.length > 0 ? fotos[0].foto : "IMG/logo.png";
@@ -53,7 +53,7 @@ export async function obtenerFotoInmueble(idInmueble) {
 
 export async function mostrarInmuebles(page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/Mostrar?page=${page}&size=${size}`,{credentials: 'include'});
+    const resp = await fetch(`${API_INM}/Mostrar?page=${page}&size=${size}`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error al cargar inmuebles");
     const json = await resp.json();
     return json.data;
@@ -65,7 +65,7 @@ export async function mostrarInmuebles(page = 0, size = 4) {
 
 export async function mostrarInmueblesPorTipo(tipo, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarporTip/${tipo}?page=${page}&size=${size}`,{credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarporTip/${tipo}?page=${page}&size=${size}`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error al buscar inmuebles por tipo");
     const json = await resp.json();
     return json.data;
@@ -77,7 +77,7 @@ export async function mostrarInmueblesPorTipo(tipo, page = 0, size = 4) {
 
 export async function mostrarInmueblesPorUbi(ubicacion, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarporUbi/${ubicacion}?page=${page}&size=${size}`,{credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarporUbi/${ubicacion}?page=${page}&size=${size}`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error al buscar inmuebles por ubicación");
     const json = await resp.json();
     return json.data;
@@ -89,8 +89,7 @@ export async function mostrarInmueblesPorUbi(ubicacion, page = 0, size = 4) {
 
 export async function mostrarInmueblesPorBusqueda(texto, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarporTitu?titulo=${encodeURIComponent(texto)}&page=${page}&size=${size}`,
-  {credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarporTitu?titulo=${encodeURIComponent(texto)}&page=${page}&size=${size}`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error al buscar inmuebles");
     const json = await resp.json();
     return json.data;
@@ -102,8 +101,7 @@ export async function mostrarInmueblesPorBusqueda(texto, page = 0, size = 4) {
 
 export async function mostrarInmueblesPorUbiYTipo(idUbicacion, idTipo, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarPorUbicacionYTipo?idUbicacion=${idUbicacion}&idTipo=${idTipo}&page=${page}&size=${size}`,
-      {credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarPorUbicacionYTipo?idUbicacion=${idUbicacion}&idTipo=${idTipo}&page=${page}&size=${size}`,{credentials: "include"});
     if (!resp.ok) throw new Error("Error al buscar inmuebles por ubicación y tipo");
     const json = await resp.json();
     return json.data;
@@ -118,8 +116,8 @@ export async function guardarFavorito(usuarioId, inmuebleId) {
   try {
     const resp = await fetch(`${API_FAV}/Guardar`, {
       method: "POST",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
-      credentials: 'include',
       body: JSON.stringify({ idUsuario: usuarioId, idInmueble: inmuebleId })
     });
     if (!resp.ok) throw new Error("Error al guardar favorito");
@@ -132,7 +130,7 @@ export async function guardarFavorito(usuarioId, inmuebleId) {
 
 export async function eliminarFavorito(idFavorito) {
   try {
-    const resp = await fetch(`${API_FAV}/Eliminar/${idFavorito}`, { method: "DELETE",credentials: 'include' });
+    const resp = await fetch(`${API_FAV}/Eliminar/${idFavorito}`, { method: "DELETE",credentials: "include" });
     if (!resp.ok) throw new Error("Error al eliminar favorito");
     return true;
   } catch (err) {
@@ -143,7 +141,7 @@ export async function eliminarFavorito(idFavorito) {
 
 export async function obtenerFavoritos(idUsuario) {
   try {
-    const resp = await fetch(`${API_FAV}/Usuario/${idUsuario}`,{credentials: 'include'});
+    const resp = await fetch(`${API_FAV}/Usuario/${idUsuario}`,{credentials: "include"});
     if (!resp.ok) throw new Error("Error al obtener favoritos");
     const json = await resp.json();
     return Array.isArray(json.data?.content) ? json.data.content : [];
@@ -160,7 +158,7 @@ export async function obtenerFavoritos(idUsuario) {
 // Obtener todos los inmuebles de un vendedor
 export async function mostrarInmueblesPorUsuario(idUsuario, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarporUser/${idUsuario}?page=${page}&size=${size}`,{credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarporUser/${idUsuario}?page=${page}&size=${size}`,{credentials: "include",});
     if (!resp.ok) throw new Error("Error al obtener inmuebles por vendedor");
     const json = await resp.json();
     return json.data;
@@ -172,9 +170,7 @@ export async function mostrarInmueblesPorUsuario(idUsuario, page = 0, size = 4) 
 
 export async function mostrarInmueblesPorUbiYUser(idUbicacion, idUsuario, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarPorUbiYUser?idUbicacion=${idUbicacion}&idUsuario=${idUsuario}&page=${page}&size=${size}`,
-      {credentials: 'include'}
-    );
+    const resp = await fetch(`${API_INM}/BuscarPorUbiYUser?idUbicacion=${idUbicacion}&idUsuario=${idUsuario}&page=${page}&size=${size}`,{credentials: "include"});
     if (!resp.ok) throw new Error("Error al filtrar por ubicación y vendedor");
     const json = await resp.json();
     return json.data;
@@ -186,7 +182,7 @@ export async function mostrarInmueblesPorUbiYUser(idUbicacion, idUsuario, page =
 
 export async function mostrarInmueblesPorTipYUser(idTipo, idUsuario, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarPorTipYUser?idTipo=${idTipo}&idUsuario=${idUsuario}&page=${page}&size=${size}`,{credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarPorTipYUser?idTipo=${idTipo}&idUsuario=${idUsuario}&page=${page}&size=${size}`,{credentials: "include"});
     if (!resp.ok) throw new Error("Error al filtrar por tipo y vendedor");
     const json = await resp.json();
     return json.data;
@@ -198,7 +194,7 @@ export async function mostrarInmueblesPorTipYUser(idTipo, idUsuario, page = 0, s
 
 export async function mostrarInmueblesPorTituloYUser(titulo, idUsuario, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarPorTituloYUser?titulo=${encodeURIComponent(titulo)}&idUsuario=${idUsuario}&page=${page}&size=${size}`,{credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarPorTituloYUser?titulo=${encodeURIComponent(titulo)}&idUsuario=${idUsuario}&page=${page}&size=${size}`,{credentials: "include"});
     if (!resp.ok) throw new Error("Error al filtrar por título y vendedor");
     const json = await resp.json();
     return json.data;
@@ -210,7 +206,7 @@ export async function mostrarInmueblesPorTituloYUser(titulo, idUsuario, page = 0
 
 export async function mostrarInmueblesPorUbiYTipoYUser(idUbicacion, idTipo, idUsuario, page = 0, size = 4) {
   try {
-    const resp = await fetch(`${API_INM}/BuscarPorUbiTipYUser?idUbicacion=${idUbicacion}&idTipo=${idTipo}&idUsuario=${idUsuario}&page=${page}&size=${size}`,{credentials: 'include'});
+    const resp = await fetch(`${API_INM}/BuscarPorUbiTipYUser?idUbicacion=${idUbicacion}&idTipo=${idTipo}&idUsuario=${idUsuario}&page=${page}&size=${size}`,{credentials: "include"});
     if (!resp.ok) throw new Error("Error al filtrar por ubicación, tipo y vendedor");
     const json = await resp.json();
     return json.data;
@@ -224,7 +220,7 @@ export async function mostrarInmueblesPorUbiYTipoYUser(idUbicacion, idTipo, idUs
 export async function eliminarInmueble(idInmueble) {
   try {
     // 1. Obtener el inmueble actual
-    const respGet = await fetch(`${API_INM}/BuscarPorId/${idInmueble}`,{credentials: 'include'});
+    const respGet = await fetch(`${API_INM}/BuscarPorId/${idInmueble}`,{credentials: "include"});
     if (!respGet.ok) throw new Error("No se pudo obtener el inmueble");
     const dataGet = await respGet.json();
     const inmueble = dataGet.data; //  aquí está el objeto completo
@@ -237,8 +233,8 @@ export async function eliminarInmueble(idInmueble) {
     // aca solo enviamos el elemento
     const resp = await fetch(`${API_INM}/Actualizar/${idInmueble}`, {
       method: "PUT",
+      credentials: "include",
       headers: { "Content-Type": "application/json" },
-      credentials: 'include',
       body: JSON.stringify(inmuebleActualizado)
     });
 
