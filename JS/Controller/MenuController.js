@@ -28,6 +28,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     const cartaContainer = document.getElementById("carta");
+    const categoriesContainer = document.querySelector(".categories");
+    const recomendadoSection = document.querySelector(".section");
 
     // Cargar foto de perfil
     const avatar = document.querySelector(".avatar");
@@ -37,6 +39,32 @@ document.addEventListener("DOMContentLoaded", async () => {
     const welcome = document.querySelector(".welcome");
     welcome.textContent = `Hola, ${usuario.nombre}`;
 
+    // ===============================
+    // SI ES VENDEDOR, OCULTAR CATEGORÍAS Y RECOMENDACIONES
+    // ===============================
+    if (role.isVendedor()) {
+      categoriesContainer.style.display = "none";
+      recomendadoSection.style.display = "none";
+      
+      // Mostrar mensaje específico para vendedores
+      cartaContainer.innerHTML = `
+        <div class="mensaje-vacio">
+          <img src="IMG/Menu.png" alt="Vendedor" class="icono-vacio"/>
+          <h3>Panel de Vendedor</h3>
+          <p>Ve a "Propiedades" para gestionar tus inmuebles.</p>
+          <button class="btn-yellow full" id="irPropiedades">Ir a Mis Propiedades</button>
+        </div>`;
+      
+      document.getElementById("irPropiedades").addEventListener("click", () => {
+        window.location.href = "Propiedades.html";
+      });
+      
+      return; // No cargar nada más para vendedores
+    }
+
+    // ===============================
+    // SOLO PARA USUARIOS (CLIENTES)
+    // ===============================
     if (!usuario.ubicacion) {
       cartaContainer.innerHTML = "<p>No se pudo obtener la ubicación del usuario.</p>";
       return;
@@ -60,26 +88,23 @@ document.addEventListener("DOMContentLoaded", async () => {
     const foto = await obtenerFotoInmueble(casa.idinmuebles);
 
     // ===============================
-    // VERIFICAR SI YA ESTÁ EN FAVORITOS (CORREGIDO)
+    // VERIFICAR SI YA ESTÁ EN FAVORITOS
     // ===============================
     let esFavorito = false;
     let idFavoritoExistente = null;
 
     if (role.isUsuario()) {
       const favoritos = await obtenerFavoritos(usuario.idusuario);
-      console.log("Favoritos del usuario:", favoritos); // Para debug
-      console.log("ID de la casa:", casa.idinmuebles); // Para debug
+      console.log("Favoritos del usuario:", favoritos);
+      console.log("ID de la casa:", casa.idinmuebles);
       
-      // Buscar si esta casa está en favoritos - CORREGIDO
       const favoritoExistente = favoritos.find(fav => {
-        // Verificar ambas posibles propiedades que podría tener el objeto favorito
         return fav.idinmuebles === casa.idinmuebles || 
                fav.idInmueble === casa.idinmuebles;
       });
       
       if (favoritoExistente) {
         esFavorito = true;
-        // Usar la propiedad correcta del id del favorito
         idFavoritoExistente = favoritoExistente.idfavoritos || favoritoExistente.idFavorito;
       }
     }
@@ -123,7 +148,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Evento click en la card completa (EXCLUYENDO la estrella)
     const card = document.getElementById(`card${casa.idinmuebles}`);
     card.addEventListener("click", (e) => {
-      // Verificar si el click NO fue en la estrella o sus elementos hijos
       if (!e.target.closest('.star-favorite')) {
         guardarVistaEnHistorial(casa);
         window.location.href = `VistaCasa.html?id=${casa.idinmuebles}`;
@@ -172,31 +196,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       const checkbox = document.getElementById(`fav${casa.idinmuebles}`);
       const starContainer = checkbox.closest('.star-favorite');
 
-      // Si ya estaba en favoritos, guardamos el id en el dataset (CORREGIDO)
       if (esFavorito && idFavoritoExistente) {
-        checkbox.dataset.idFavorito = idFavoritoExistente; // Usar idFavorito como en el ejemplo
+        checkbox.dataset.idFavorito = idFavoritoExistente;
       }
 
-      // Prevenir que el click en la estrella active el evento de la card
       starContainer.addEventListener("click", (e) => {
         e.stopPropagation();
       });
 
-      // Evento cuando cambia el estado del checkbox (CORREGIDO)
       checkbox.addEventListener("change", async (e) => {
         if (e.target.checked) {
-          // Agregar a favoritos
           const favorito = await guardarFavorito(usuario.idusuario, casa.idinmuebles);
           if (favorito) {
-            // Usar la misma propiedad que en el ejemplo
             e.target.dataset.idFavorito = favorito.idFavorito || favorito.idfavoritos;
             guardarFavoritosHistorial(casa);
           } else {
             e.target.checked = false;
           }
         } else {
-          // Eliminar de favoritos
-          const idFavorito = e.target.dataset.idFavorito; // Usar idFavorito como en el ejemplo
+          const idFavorito = e.target.dataset.idFavorito;
           if (idFavorito) {
             const eliminado = await eliminarFavorito(idFavorito);
             if (eliminado) {
@@ -209,9 +227,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         }
       });
     }
-    // ===============================
 
-    // Funcion para "Cerca de ti"
+    // Funcion para "Cerca de ti" (solo para usuarios)
     document.getElementById("cercaDeTi").addEventListener("click", async () => {
       if (usuario && usuario.idubicacion) {
         localStorage.setItem("ubicacion", usuario.idubicacion);
@@ -223,6 +240,5 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   } catch (error) {
     console.error("Error en MenuController:", error);
-    // window.location.href = "login.html";
   }
 });

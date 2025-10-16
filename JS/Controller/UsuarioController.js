@@ -307,7 +307,7 @@ guardarBtn?.addEventListener('click', async () => {
     // Cerrar sesión
    cerrarSesionBtn?.addEventListener('click', async () => 
     {
-         mostrarNotificacion('Cerrando Secion', "exito");
+         mostrarNotificacion('Cerrando Sesion', "exito");
         
         setTimeout(() =>   cerrarSesion(), /*pasa por SessionController*/ 1500);
    

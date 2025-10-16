@@ -43,9 +43,24 @@
   <span id="page-numbers"></span>
 </div>
   </main>
+  
 <nav class="bottom-nav" id="bottom-nav"></nav>
 
+  <!-- Modal de Confirmación -->
+    <div id="modalConfirm" class="modal">
+        <div class="modal-content">
+            <p id="modalMensaje">¿Estás seguro?</p>
+            <div class="modal-buttons">
+                <button id="modalSi">Sí</button>
+                <button id="modalNo">No</button>
+            </div>
+        </div>
+    </div>
 
+    <!-- Notificación -->
+    <div id="notificacion" class="notificacion">
+        <p id="notificacionMensaje"></p>
+    </div>
   <script type="module" src="JS/Controller/VisitaController.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
