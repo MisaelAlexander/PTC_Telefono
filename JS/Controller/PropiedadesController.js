@@ -230,12 +230,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             <p>Ubicación: ${casa.ubicacion}</p>
             <p>Precio: $${casa.precio.toLocaleString()}</p>
             <p>${casa.habitaciones} habitaciones, ${casa.banios} baños</p>
-            ${role.isVendedor() ? `
-            <div class="acciones-vendedor">
-              <button class="btn-actualizar">Actualizar</button>
-              <button class="btn-eliminar">Eliminar</button>
-            </div>` : "" }
-          </div>
+           
         `;
         main.appendChild(card);
 
@@ -244,32 +239,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           window.location.href = `Vistacasa.html?id=${casa.idinmuebles}`;
         });
 
-        if (role.isVendedor()) {
-          const btnActualizar = card.querySelector(".btn-actualizar");
-          const btnEliminar = card.querySelector(".btn-eliminar");
-
-          // Confirmación al actualizar
-          btnActualizar.addEventListener("click", async (e) => {
-            e.stopPropagation();
-            const confirmado = await confirmarPregunta(`¿Deseas actualizar "${casa.titulo}"?`);
-            if (confirmado) window.location.href = `Publicar.html?id=${casa.idinmuebles}`;
-          });
-
-          // Confirmación al eliminar
-          btnEliminar.addEventListener("click", async (e) => {
-            e.stopPropagation();
-            const confirmado = await confirmarPregunta(`¿Seguro que deseas eliminar "${casa.titulo}"?`);
-            if (!confirmado) return;
-
-            const eliminado = await eliminarInmueble(casa.idinmuebles);
-            if (eliminado) {
-              mostrarNotificacion("Inmueble eliminado correctamente", "exito");
-              card.remove();
-            } else {
-              mostrarNotificacion("Ocurrió un error al eliminar el inmueble", "error");
-            }
-          });
-        }
+        
 
         if (role.isUsuario()) {
           const checkbox = card.querySelector(`#fav${casa.idinmuebles}`);

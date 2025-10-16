@@ -60,18 +60,27 @@ document.addEventListener("DOMContentLoaded", async () => {
     const foto = await obtenerFotoInmueble(casa.idinmuebles);
 
     // ===============================
-    // VERIFICAR SI YA ESTÁ EN FAVORITOS
+    // VERIFICAR SI YA ESTÁ EN FAVORITOS (CORREGIDO)
     // ===============================
     let esFavorito = false;
     let idFavoritoExistente = null;
 
     if (role.isUsuario()) {
       const favoritos = await obtenerFavoritos(usuario.idusuario);
-      const favoritoExistente = favoritos.find(fav => fav.idinmuebles === casa.idinmuebles);
+      console.log("Favoritos del usuario:", favoritos); // Para debug
+      console.log("ID de la casa:", casa.idinmuebles); // Para debug
+      
+      // Buscar si esta casa está en favoritos - CORREGIDO
+      const favoritoExistente = favoritos.find(fav => {
+        // Verificar ambas posibles propiedades que podría tener el objeto favorito
+        return fav.idinmuebles === casa.idinmuebles || 
+               fav.idInmueble === casa.idinmuebles;
+      });
       
       if (favoritoExistente) {
         esFavorito = true;
-        idFavoritoExistente = favoritoExistente.idfavoritos;
+        // Usar la propiedad correcta del id del favorito
+        idFavoritoExistente = favoritoExistente.idfavoritos || favoritoExistente.idFavorito;
       }
     }
 
@@ -163,9 +172,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       const checkbox = document.getElementById(`fav${casa.idinmuebles}`);
       const starContainer = checkbox.closest('.star-favorite');
 
-      // Si ya estaba en favoritos, guardamos el id en el dataset
+      // Si ya estaba en favoritos, guardamos el id en el dataset (CORREGIDO)
       if (esFavorito && idFavoritoExistente) {
-        checkbox.dataset.idfavorito = idFavoritoExistente;
+        checkbox.dataset.idFavorito = idFavoritoExistente; // Usar idFavorito como en el ejemplo
       }
 
       // Prevenir que el click en la estrella active el evento de la card
@@ -173,24 +182,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         e.stopPropagation();
       });
 
-      // Evento cuando cambia el estado del checkbox
+      // Evento cuando cambia el estado del checkbox (CORREGIDO)
       checkbox.addEventListener("change", async (e) => {
         if (e.target.checked) {
           // Agregar a favoritos
           const favorito = await guardarFavorito(usuario.idusuario, casa.idinmuebles);
           if (favorito) {
-            e.target.dataset.idfavorito = favorito.idFavorito;
+            // Usar la misma propiedad que en el ejemplo
+            e.target.dataset.idFavorito = favorito.idFavorito || favorito.idfavoritos;
             guardarFavoritosHistorial(casa);
           } else {
             e.target.checked = false;
           }
         } else {
           // Eliminar de favoritos
-          const idFavorito = e.target.dataset.idfavorito;
+          const idFavorito = e.target.dataset.idFavorito; // Usar idFavorito como en el ejemplo
           if (idFavorito) {
             const eliminado = await eliminarFavorito(idFavorito);
             if (eliminado) {
-              delete e.target.dataset.idfavorito;
+              delete e.target.dataset.idFavorito;
               eliminarFavoritosHistorial(casa);
             } else {
               e.target.checked = true;
@@ -212,7 +222,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
   } catch (error) {
-
-     window.location.href = "login.html";
+    console.error("Error en MenuController:", error);
+    // window.location.href = "login.html";
   }
 });
