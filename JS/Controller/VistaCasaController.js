@@ -1,4 +1,4 @@
-import { obtenerInmueblePorId, obtenerFotosPorInmuebleId } from "../Service/VistaCasaService.js";
+  import { obtenerInmueblePorId, obtenerFotosPorInmuebleId } from "../Service/VistaCasaService.js";
   import { requireAuth, role, auth } from "./SessionController.js";
 
   document.addEventListener("DOMContentLoaded", async () => {
