@@ -1,4 +1,4 @@
-import { actualizarUsuarioCompleto, obtenerUbicaciones, subirFotoUsuario, desactivarUsuario, obtenerUsuarioPorId} from '../Service/UsuarioService.js';
+import { actualizarUsuarioCompleto, obtenerUbicaciones, subirFotoUsuario, obtenerUsuarioPorId, desactivarCuenta } from '../Service/UsuarioService.js';
 import { renderUser,auth,cerrarSesion } from "../Controller/SessionController.js";
 
 document.addEventListener('DOMContentLoaded', async () => {
@@ -24,9 +24,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     const notificacionMensaje = document.getElementById("notificacionMensaje");
 
     // Confirmación de desactivación
-    const confirmacionDesactivar = document.getElementById("confirmacionDesactivar");
-    const btnConfirmar = document.getElementById("btnConfirmar");
-    const btnCancelar = document.getElementById("btnCancelar");
+    const confirmacionDesactivar = document.getElementById("modalConfirm");
+    const btnConfirmar = document.getElementById("modalSi");
+    const btnCancelar = document.getElementById("modalNo");
 
 
     function mostrarModalConfirm(mensaje) {
@@ -276,7 +276,7 @@ guardarBtn?.addEventListener('click', async () => {
             // Si cambió el username → cerrar sesión
             localStorage.removeItem('usuario');
             mostrarNotificacion("Usuario actualizado. Debes volver a iniciar sesión.", "exito");
-            setTimeout(() => window.location.href = "login.html", 1500);
+            setTimeout(() => window.location.href = "index.html", 1500);
         } else {
             // Si no cambió → actualizar normal
             usuario = actualizado;
@@ -313,27 +313,39 @@ guardarBtn?.addEventListener('click', async () => {
    
   });
 
-    // Eliminar / desactivar cuenta
-    eliminarCuentaBtn?.addEventListener('click', () => {
-        confirmacionDesactivar.style.display = "block";
-    });
+// Eliminar / desactivar cuenta
+eliminarCuentaBtn?.addEventListener('click', () => {
 
-    btnCancelar?.addEventListener('click', () => confirmacionDesactivar.style.display = "none");
+    confirmacionDesactivar.style.display = "block";
+});
 
-    btnConfirmar?.addEventListener('click', async () => {
+btnCancelar?.addEventListener('click', () => {
+    confirmacionDesactivar.style.display = "none";
+});
+
+btnConfirmar?.addEventListener('click', async () => {
+
+    
+    if (!usuario) {
+
+        return;
+    }
+
+    try {
+
         
-        if (!usuario) return;
+        // Asegúrate de importar desactivarCuenta al inicio del archivo
+        await desactivarCuenta(usuario.idusuario || usuario.IDUsuario);
+        
+        localStorage.removeItem('usuario');
+        mostrarNotificacion("Cuenta e inmuebles desactivados correctamente.", "exito");
+        confirmacionDesactivar.style.display = "none";
+        setTimeout(() =>   cerrarSesion(), /*pasa por SessionController*/ 1500);
+        setTimeout(() => window.location.href = "index.html", 1500);
+    } catch (error) {
 
-        try {
-            const usuarioDTO = { ...usuario, estado: false };
-            await desactivarUsuario(usuario.idusuario || usuario.IDUsuario, usuarioDTO);
-            localStorage.removeItem('usuario');
-            mostrarNotificacion("Cuenta desactivada correctamente.", "exito");
-            confirmacionDesactivar.style.display = "none";
-            setTimeout(() => window.location.href = "login.html", 1500);
-        } catch (error) {
-            console.error(error);
-            mostrarNotificacion("Error al desactivar cuenta.", "error");
-        }
-    });
+        mostrarNotificacion("Error al desactivar cuenta.", "error");
+    }
+});
+
 });
